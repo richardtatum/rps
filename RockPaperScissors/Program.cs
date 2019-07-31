@@ -106,6 +106,8 @@ namespace RPS
 
     class Player
     {
+        /* Default name set to Computer to help direct the Choice() method
+        this is overridden if a second player joins and selects a name */
         public string name = "Computer";
         string move;
         public int wins = 0;
@@ -117,6 +119,8 @@ namespace RPS
             {
                 Console.WriteLine("\nPlayer, what is your name?");
                 string tempName = Console.ReadLine();
+                /* Makes sure the player cant name themselves 'Computer' to break the system
+                 Also stops names with no characters. */
                 if (tempName.ToLower() == "computer" | tempName.Length < 2)
                 {
                     Console.WriteLine("\nYou cannot call yourself that, sorry.");
@@ -128,6 +132,8 @@ namespace RPS
             }
         }
 
+        /* Allows Choice() to be called in the ExecuteGame class without wondering
+        if the player is a person or the computer.*/
         public string Choice()
         {
             if (name == "Computer")
@@ -147,6 +153,7 @@ namespace RPS
             {
                 Console.WriteLine("{0}, please input your move.", name);
                 string usermove = Console.ReadLine().ToLower();
+                // Checks if the inputted move matches the allowed set of r/p/s
                 if (MoveList.moveList.Any(usermove.Contains))
                 {
                     move = usermove;
@@ -198,6 +205,8 @@ namespace RPS
             Player p = new Player();
             p.SetName();
 
+            /* Initial Player 2, then designate as a computer or
+             player based on the users input */ 
             Player p2 = new Player();
             if (g.SetPlayers() == "player")
             {
@@ -227,12 +236,11 @@ namespace RPS
             Console.WriteLine("\nGame Over!");
             Console.WriteLine("-----------------------");
             Console.WriteLine("Winner: {0}", g.GameOutcome(p.name, p.wins, p2.name, p2.wins));
-            Console.WriteLine("{0} most played move: {1}", p.name, p.MostUsed());
-            Console.WriteLine("{0} most played move: {1}", p2.name, p2.MostUsed());
+            Console.WriteLine("{0}'s most played move: {1}", p.name, p.MostUsed());
+            Console.WriteLine("{0}'s most played move: {1}", p2.name, p2.MostUsed());
 
             Console.ReadLine();
 
-            // Correct rounds 3/5/7
         }
     }
 }
