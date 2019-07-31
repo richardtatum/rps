@@ -19,12 +19,10 @@ namespace RPS
     class GameSetup
     {
         public int rounds = 0;
-        public string opponent = "none";
-        string winner;
-        string result;
 
         public string SetPlayers()
         {
+            string opponent = "none";
             while (opponent == "none")
             {
                 Console.WriteLine("\nWould you like to play against another player or a computer?");
@@ -46,20 +44,28 @@ namespace RPS
             while (rounds == 0)
             {
                 Console.WriteLine("\nHow many rounds would you like to play?");
-                int roundChoice = Convert.ToInt32(Console.ReadLine());
-                if (roundChoice >= 1 && roundChoice <= 20)
+                try
                 {
-                    rounds = roundChoice;
+                    int roundChoice = Convert.ToInt32(Console.ReadLine());
+                    if (roundChoice >= 1 && roundChoice <= 20)
+                    {
+                        rounds = roundChoice;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid choice between 1 and 20 rounds.");
+                    }
                 }
-                else
+                catch (FormatException)
                 {
-                    Console.WriteLine("Please enter a valid choice between 1 and 20 rounds.");
+                    Console.WriteLine("Please enter a number.");
                 }
             }
         }
 
         public string RoundOutcome(string p1Name, string p1Move, string p2Name, string p2Move)
         {
+            string result;
             Console.WriteLine("\n{0} played {1}. {2} played {3}", p1Name, p1Move, p2Name, p2Move);
             if (p1Move == p2Move)
             {
@@ -87,6 +93,7 @@ namespace RPS
 
         public string GameOutcome(string p1Name, int p1wins, string p2Name, int p2wins)
         {
+            string winner;
             if (p1wins > p2wins)
             {
                 winner = $"{p1Name} Wins!";
@@ -109,8 +116,8 @@ namespace RPS
         /* Default name set to Computer to help direct the Choice() method
         this is overridden if a second player joins and selects a name */
         public string name = "Computer";
-        string move;
         public int wins = 0;
+        string move;
         public List<string> moveHistory = new List<string>();
 
         public void SetName()
@@ -235,7 +242,7 @@ namespace RPS
             }
             Console.WriteLine("\nGame Over!");
             Console.WriteLine("-----------------------");
-            Console.WriteLine("Winner: {0}", g.GameOutcome(p.name, p.wins, p2.name, p2.wins));
+            Console.WriteLine("{0}", g.GameOutcome(p.name, p.wins, p2.name, p2.wins));
             Console.WriteLine("{0}'s most played move: {1}", p.name, p.MostUsed());
             Console.WriteLine("{0}'s most played move: {1}", p2.name, p2.MostUsed());
 
